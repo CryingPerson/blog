@@ -1,0 +1,86 @@
+package com.blog.service;
+
+import com.blog.domain.Post;
+import com.blog.domain.PostEditor;
+import com.blog.repository.PostRepository;
+import com.blog.request.PostCreate;
+import com.blog.request.PostEdit;
+import com.blog.request.PostSearch;
+import com.blog.response.PostResponse;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+@Slf4j
+@RequiredArgsConstructor
+public class PostService {
+
+    private  final PostRepository postRepository;
+
+    public void write(PostCreate postCreate){
+        // repository.save(postCreate)
+
+        Post post =  Post.builder()
+                .title(postCreate.getTitle())
+                .content(postCreate.getContent())
+                .build();
+
+        postRepository.save(post);
+
+        // 클라이언트 요구사항
+            // Json 응답에서 title 값 길이를 최대 10글자로 해주세요.
+            // post entity < - > PostResponse class
+    }
+
+    public PostResponse get(Long id){
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 글입니다."));
+
+        return PostResponse.builder()
+                .id(post.getId())
+                .title(post.getTitle())
+                .content(post.getContent())
+                .build();
+    }
+
+    // 글이 너무 많은 경우 -> 비용이 너무 많이 든다.
+    // 글이 -> 100,000,000 -> DB 글 모두 조회하는 경우 -> DB가 뻗을 수 있다.
+    // DB -> 애플리케이션 서버로 전달하는 시간, 트래픽비용 등이 많이 발생할 수 있다.
+    public List<PostResponse> getList(PostSearch postSearch) {
+        // web -> page 1 -> 0
+        return postRepository.getList(postSearch).stream()
+                .map(PostResponse::new)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void edit(Long id, PostEdit postEdit){
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 글입니다."));
+        PostEditor.PostEditorBuilder EditorBuilder = post.toEditor();
+        PostEditor postEditor = EditorBuilder.title(postEdit.getTitle())
+                .content(postEdit.getContent())
+                .build();
+        post.edit(postEditor);
+
+//        post.edit(postEdit.getTitle() != null ? postEdit.getTitle() : post.getTitle(),
+//                postEdit.getContent() != null ? postEdit.getContent() : post.getContent());
+    }
+
+    public void delete(Long id) {
+        Post post = postRepository.findById(id)
+                .orElseThrow( () -> new IllegalArgumentException("존재하지 않는 글입니다."));
+
+        // -> 존재하는 경우
+        postRepository.delete(post);
+    }
+}
