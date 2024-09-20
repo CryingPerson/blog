@@ -1,16 +1,16 @@
 package com.blog.controller;
 
 
+import com.blog.exception.InvalidRequest;
+import com.blog.exception.blogException;
 import com.blog.response.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Slf4j
 @RestControllerAdvice
@@ -35,4 +35,28 @@ public class ExceptionController {
 //        e.getField()
         return response;
     }
+
+    @ExceptionHandler(blogException.class)
+    public ResponseEntity<ErrorResponse> blogExceptionHandler(blogException e){
+        int statusCode = e.getStatusCode();
+        ErrorResponse body = ErrorResponse.builder()
+                .code(String.valueOf(statusCode))
+                .message(e.getMessage())
+                .validation(e.getValidation())
+                .build();
+
+//        if(e instanceof InvalidRequest){
+//            InvalidRequest invalidRequest = (InvalidRequest) e;
+//            String fieldName = invalidRequest.getFieldName();
+//            String message = invalidRequest.getMessage();
+//            body.addValidation(fieldName, message);
+//        }
+        //응답 json validation -> title : 제목에 바보를 포함할 수 없습니다.
+
+        ResponseEntity<ErrorResponse> response = ResponseEntity.status(statusCode)
+                .body(body);
+
+        return response;
+    }
+
 }

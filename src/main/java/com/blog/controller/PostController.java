@@ -1,6 +1,7 @@
 package com.blog.controller;
 
 import com.blog.domain.Post;
+import com.blog.exception.InvalidRequest;
 import com.blog.request.PostCreate;
 import com.blog.request.PostEdit;
 import com.blog.request.PostSearch;
@@ -33,6 +34,7 @@ public class PostController {
 
     @PostMapping("/posts")
     public void post(@RequestBody @Valid PostCreate request) throws Exception {
+        request.validate();
         postService.write(request);
     }
 

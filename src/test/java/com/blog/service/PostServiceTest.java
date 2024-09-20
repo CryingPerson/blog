@@ -1,6 +1,7 @@
 package com.blog.service;
 
 import com.blog.domain.Post;
+import com.blog.exception.PostNotFound;
 import com.blog.repository.PostRepository;
 import com.blog.request.PostCreate;
 import com.blog.request.PostEdit;
@@ -208,5 +209,65 @@ class PostServiceTest {
 
         assertEquals(0, postRepository.count());
     }
+    @Test
+    @DisplayName("글 1개 조회 - 존재 하지 않는 글")
+    void test8() {
+        // given
+        Post post = Post.builder()
+                .title("시현잉")
+                .content("반포자이")
+                .build();
+        postRepository.save(post);
 
+        // post.getId() // primary_id = 1
+
+        // expected
+
+         assertThrows(PostNotFound.class, () -> {
+            postService.get(post.getId() + 1L);
+        });
+    }
+
+    @Test
+    @DisplayName("게시글 삭제 - 존재하지 않는 글")
+    void test9(){
+        // given
+        Post post = Post.builder()
+                .title("이시현")
+                .content("반포자이")
+                .build();
+
+
+        postRepository.save(post);
+        // expected
+
+        assertThrows(PostNotFound.class, () -> {
+            postService.delete(post.getId() + 1L);
+        });
+    }
+
+    @Test
+    @DisplayName("글 내용 수정 - 존재 하지 않는 게시글 수정")
+    void test10() {
+        // given
+        Post post = Post.builder()
+                .title("이시현")
+                .content("반포자이")
+                .build();
+
+
+        postRepository.save(post);
+
+        PostEdit postEdit = PostEdit.builder()
+                .title(null)
+                .content("치킨집")
+                .build();
+        // sql -> select, limit, offset
+
+        // expected
+        assertThrows(PostNotFound.class, () -> {
+            postService.edit(post.getId() + 1L, postEdit);
+        });
+
+    }
 }
