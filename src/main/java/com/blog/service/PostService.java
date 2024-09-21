@@ -79,7 +79,7 @@ public class PostService {
 
     public void delete(Long id) {
         Post post = postRepository.findById(id)
-                .orElseThrow( PostNotFound::new);
+                .orElseThrow(PostNotFound::new);
 
         // -> 존재하는 경우
         postRepository.delete(post);
