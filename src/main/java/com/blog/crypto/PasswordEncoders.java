@@ -1,13 +1,12 @@
 package com.blog.crypto;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ScryptPasswordEncoder {
+public class PasswordEncoders {
 
-   private static final PasswordEncoder encoder = new SCryptPasswordEncoder(
+   private static final SCryptPasswordEncoder encoder = new SCryptPasswordEncoder(
             16,
             8,
             1,
