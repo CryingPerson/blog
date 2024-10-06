@@ -1,4 +1,4 @@
-package com.blog.request;
+package com.blog.request.post;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;

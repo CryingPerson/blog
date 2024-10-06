@@ -12,6 +12,7 @@ public class PostEditor {
     public PostEditor(String title, String content) {
         this.title = title;
         this.content = content;
+
     }
 
     @Generated

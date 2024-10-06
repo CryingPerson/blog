@@ -1,0 +1,19 @@
+package com.blog.annotation;
+
+import org.springframework.security.test.context.support.WithSecurityContext;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
+@Retention(RetentionPolicy.RUNTIME)
+@WithSecurityContext(factory = BlogMockSecurityContext.class)
+public @interface BlogMockUser {
+
+    String email() default "opnice12@naver.com";
+
+    String password() default "1111";
+
+    String name() default "이시현";
+
+    String role() default "ROLE_ADMIN";
+}

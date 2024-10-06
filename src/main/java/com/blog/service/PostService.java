@@ -1,19 +1,18 @@
 package com.blog.service;
 
+import com.blog.domain.AppUser;
 import com.blog.domain.Post;
 import com.blog.domain.PostEditor;
 import com.blog.exception.PostNotFound;
-import com.blog.repository.PostRepository;
-import com.blog.request.PostCreate;
-import com.blog.request.PostEdit;
-import com.blog.request.PostSearch;
+import com.blog.exception.UserNotFound;
+import com.blog.repository.post.PostRepository;
+import com.blog.repository.UserRepository;
+import com.blog.request.post.PostCreate;
+import com.blog.request.post.PostEdit;
+import com.blog.request.post.PostSearch;
 import com.blog.response.PostResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,10 +26,15 @@ public class PostService {
 
     private  final PostRepository postRepository;
 
-    public void write(PostCreate postCreate){
+    private final UserRepository userRepository;
+    public void write(Long userId ,PostCreate postCreate){
+
         // repository.save(postCreate)
+        AppUser user = userRepository.findById(userId)
+                .orElseThrow(UserNotFound::new);
 
         Post post =  Post.builder()
+                .user(user)
                 .title(postCreate.getTitle())
                 .content(postCreate.getContent())
                 .build();

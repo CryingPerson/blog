@@ -3,6 +3,8 @@ package com.blog.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
@@ -17,10 +19,18 @@ public class Post {
     @Lob
     private String content;
 
+    @ManyToOne
+    @JoinColumn
+    private AppUser user;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "post")
+    private List<Comment> comments;
+
     @Builder
-    public Post(String title, String content) {
+    public Post(String title, String content, AppUser user) {
         this.title = title;
         this.content = content;
+        this.user = user;
     }
 
         // 서비스의 정책을 넣지마세요!! 절대!!
@@ -39,5 +49,14 @@ public class Post {
     public void edit(PostEditor postEditor) {
         title = postEditor.getTitle();
         content = postEditor.getContent();
+    }
+
+    public Long getUserId(){
+        return this.user.getId();
+    }
+
+    public void addComment(Comment comment) {
+        comment.setPost(this);
+        this.comments.add(comment);
     }
 }

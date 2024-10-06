@@ -1,11 +1,13 @@
 package com.blog.service;
 
+import com.blog.domain.AppUser;
 import com.blog.domain.Post;
 import com.blog.exception.PostNotFound;
-import com.blog.repository.PostRepository;
-import com.blog.request.PostCreate;
-import com.blog.request.PostEdit;
-import com.blog.request.PostSearch;
+import com.blog.repository.post.PostRepository;
+import com.blog.repository.UserRepository;
+import com.blog.request.post.PostCreate;
+import com.blog.request.post.PostEdit;
+import com.blog.request.post.PostSearch;
 import com.blog.response.PostResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,16 +15,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.data.domain.Sort.Direction.DESC;
 
 @SpringBootTest
 class PostServiceTest {
@@ -32,22 +30,34 @@ class PostServiceTest {
     @Autowired
     private PostRepository postRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @BeforeEach
     void clean() {
         postRepository.deleteAll();
+        userRepository.deleteAll();
     }
 
     @Test
     @DisplayName("글 작성")
     void test1() {
         // given
+        AppUser user = AppUser.builder()
+                .name("이시현")
+                .email("oo@naver.com")
+                .password("1111")
+                .build();
+
+        userRepository.save(user);
         PostCreate postCreate = PostCreate.builder()
+
                 .title("제목입니다.")
                 .content("내용입니다.")
                 .build();
 
         //when
-        postService.write(postCreate);
+        postService.write(user.getId(), postCreate);
 
         //then
         assertEquals(1L, postRepository.count());

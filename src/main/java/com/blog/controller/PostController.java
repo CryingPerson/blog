@@ -1,41 +1,42 @@
 package com.blog.controller;
 
-import com.blog.domain.Post;
-import com.blog.exception.InvalidRequest;
-import com.blog.request.PostCreate;
-import com.blog.request.PostEdit;
-import com.blog.request.PostSearch;
+
+import com.blog.config.UserPrincipal;
+import com.blog.request.post.PostCreate;
+import com.blog.request.post.PostEdit;
+import com.blog.request.post.PostSearch;
 import com.blog.response.PostResponse;
 import com.blog.service.PostService;
-import jakarta.persistence.PostUpdate;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
 public class PostController {
     private final PostService postService;
+
+
     // Http Method
     // GET, POST, PUT, PATCH, DELETE, OPTIONS, HEAD, TRACE, CONNECT
     // 글 등록, 글 단건 조회, 글 리스트 조회
     // CRUD -> Create, Read, Update
     // POST Method
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/posts")
-    public void post(@RequestBody @Valid PostCreate request) throws Exception {
+    public void post(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody @Valid PostCreate request) {
+        // 1. GET parameter
+        // 2. POST(body) value
+        // 3. Header
         request.validate();
-        postService.write(request);
+        postService.write(userPrincipal.getUserId(), request);
     }
 
     @GetMapping("/posts/{postId}")
@@ -53,12 +54,13 @@ public class PostController {
     public List<PostResponse> getList(@ModelAttribute PostSearch postSearch){
         return postService.getList(postSearch);
     }
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/posts/{postId}")
     public void edit(@PathVariable Long postId, @RequestBody @Valid PostEdit request){
         postService.edit(postId, request);
     }
-
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') && hasPermission(#postId, 'POST', 'DELETE')")
     @DeleteMapping("/posts/{postId}")
     public void delete(@PathVariable Long postId){
         postService.delete(postId);

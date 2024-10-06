@@ -26,7 +26,6 @@ public class ExceptionController {
                 .code("400")
                 .message("잘못된 요청 입니다.")
                 .build();
-
          for(FieldError fieldError : e.getFieldErrors()){
              response.addValidation(fieldError.getField(), fieldError.getDefaultMessage());
          }
@@ -39,6 +38,8 @@ public class ExceptionController {
     @ExceptionHandler(blogException.class)
     public ResponseEntity<ErrorResponse> blogExceptionHandler(blogException e){
         int statusCode = e.getStatusCode();
+
+        System.out.println("Status Code: " + statusCode);
         ErrorResponse body = ErrorResponse.builder()
                 .code(String.valueOf(statusCode))
                 .message(e.getMessage())
@@ -54,6 +55,29 @@ public class ExceptionController {
         //응답 json validation -> title : 제목에 바보를 포함할 수 없습니다.
 
         ResponseEntity<ErrorResponse> response = ResponseEntity.status(statusCode)
+                .body(body);
+
+        return response;
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> exceptionHandler(Exception e){
+        log.error("예외발생", e);
+
+        ErrorResponse body = ErrorResponse.builder()
+                .code("500")
+                .message(e.getMessage())
+                .build();
+
+//        if(e instanceof InvalidRequest){
+//            InvalidRequest invalidRequest = (InvalidRequest) e;
+//            String fieldName = invalidRequest.getFieldName();
+//            String message = invalidRequest.getMessage();
+//            body.addValidation(fieldName, message);
+//        }
+        //응답 json validation -> title : 제목에 바보를 포함할 수 없습니다.
+
+        ResponseEntity<ErrorResponse> response = ResponseEntity.status(500)
                 .body(body);
 
         return response;
