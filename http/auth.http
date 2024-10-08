@@ -1,6 +1,6 @@
 ### 회원가입
 
-POST http://localhost:8080/auth/signup
+POST http://localhost:8888/auth/signup
 Content-Type: application/json
 
 {
@@ -14,12 +14,11 @@ Content-Type: application/json
 
 ### 로그인
 
-POST http://localhost:8080/auth/login
+POST http://localhost:8888/auth/login
 Content-Type: application/json
 
 {
   "email" :"opnice12@naver.com",
-
   "password" : "1111"
 }
 

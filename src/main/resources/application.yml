@@ -1,3 +1,5 @@
+
+
 spring:
   h2:
     console:
@@ -15,8 +17,9 @@ spring:
     password:
     driver-class-name: org.h2.Driver
   jpa:
-
-
     defer-datasource-initialization: true
 sihyeon:
   jwt-Key : "MrBSSdpIcdVtFw6ERE77Nev1MeoM7U5sumaSXvbuqpc="
+server:
+  port: 8888
+  address: 0.0.0.0

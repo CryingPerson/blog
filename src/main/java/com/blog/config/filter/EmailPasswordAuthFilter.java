@@ -23,9 +23,6 @@ public class EmailPasswordAuthFilter extends AbstractAuthenticationProcessingFil
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
         EmailPassword emailPassword = objectMapper.readValue(request.getInputStream(), EmailPassword.class);
-        System.out.println("EmailPasswordAuthFilter: attemptAuthentication 메서드 호출됨");
-        System.out.println("이메일: " + emailPassword.getEmail());
-        System.out.println("비밀번호: " + emailPassword.getPassword());
         UsernamePasswordAuthenticationToken token = UsernamePasswordAuthenticationToken.unauthenticated(
                 emailPassword.email,
                 emailPassword.password
