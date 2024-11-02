@@ -17,7 +17,10 @@ export default defineConfig({
     proxy: {
       '/api': {
         target: 'http://localhost:8888',
-        // rewrite: (path) => path.replace(/^\/api/, ''),
+        // rewrite: (path) => path.replace(/^\/api/, ''), // 필요에 따라 주석 해제// 필요에 따라 추가
+      },
+      '/logout': {
+        target: 'http://localhost:8888',
       },
     },
   },

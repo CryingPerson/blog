@@ -13,6 +13,7 @@ import com.blog.service.AuthService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -86,4 +87,5 @@ public class AuthController {
     public void signup(@RequestBody Signup signup){
         authService.signup(signup);
     }
+
 }
