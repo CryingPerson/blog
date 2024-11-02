@@ -1,7 +1,7 @@
 
 ### 게시글 작성
 
-POST http://localhost:8080/posts
+POST http://localhost:8888/posts
 Content-Type: application/json
 
 {
@@ -10,5 +10,25 @@ Content-Type: application/json
 }
 
 ### 게시글 삭제
-DELETE http://localhost:8080/posts/1
+DELETE http://localhost:8888/posts/1
+Content-Type: application/json
+
+###
+
+GET http://localhost:8888/subscribe/1
+Content-Type: application/json
+
+###
+
+POST http://localhost:8888/posts/1/comments
+Content-Type: application/json
+
+{
+  "author" : "제목1",
+  "password" : "111167",
+  "content" : "제발제발제발제발제발제발제발"
+}
+
+### 게시글 리스트 조회
+GET http://localhost:8888/posts?page=1&size=2
 Content-Type: application/json

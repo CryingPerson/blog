@@ -3,6 +3,8 @@ package com.blog.request.post;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 @Getter
 @Setter
@@ -18,5 +20,9 @@ public class PostSearch {
 
     public long getOffset(){
         return (long) (Math.max(1, page) - 1 ) * Math.min(size, MAX_SIZE);
+    }
+
+    public Pageable getPageable(){
+        return PageRequest.of(page - 1,size);
     }
 }

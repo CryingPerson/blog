@@ -2,14 +2,17 @@ package com.blog.controller;
 
 
 import com.blog.config.UserPrincipal;
+import com.blog.domain.Post;
 import com.blog.request.post.PostCreate;
 import com.blog.request.post.PostEdit;
 import com.blog.request.post.PostSearch;
+import com.blog.response.PagingResponse;
 import com.blog.response.PostResponse;
 import com.blog.service.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +22,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api")
 public class PostController {
     private final PostService postService;
 
@@ -51,7 +55,7 @@ public class PostController {
      *  /posts/{pstId} -> 글 한개만 조회
      */
     @GetMapping("/posts")
-    public List<PostResponse> getList(@ModelAttribute PostSearch postSearch){
+    public PagingResponse<PostResponse> getList(@ModelAttribute PostSearch postSearch){
         return postService.getList(postSearch);
     }
     @PreAuthorize("hasRole('ROLE_ADMIN')")

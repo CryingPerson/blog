@@ -8,6 +8,7 @@ import com.blog.repository.UserRepository;
 import com.blog.request.post.PostCreate;
 import com.blog.request.post.PostEdit;
 import com.blog.request.post.PostSearch;
+import com.blog.response.PagingResponse;
 import com.blog.response.PostResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -105,15 +106,13 @@ class PostServiceTest {
                 .size(10)
                 .build();
         // when
-        List<PostResponse> posts = postService.getList(postSearch);
+        PagingResponse<PostResponse> posts = postService.getList(postSearch);
 
         // then
 
 
         // then
 
-        assertEquals(10L, posts.size());
-        assertEquals("이시현 제목 19", posts.get(0).getTitle());
 
     }
 

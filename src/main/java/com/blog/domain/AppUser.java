@@ -15,6 +15,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class AppUser {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,8 +28,8 @@ public class AppUser {
 
     private LocalDateTime createdAt;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    private List<Post> posts;
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+//    private List<Post> posts;
 
     @Builder
     public AppUser(String name, String email, String password) {

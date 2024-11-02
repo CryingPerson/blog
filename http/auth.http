@@ -1,7 +1,8 @@
 ### 회원가입
 
-POST http://localhost:8888/auth/signup
+POST http://localhost:8888/api/auth/signup
 Content-Type: application/json
+Authorization: 555
 
 {
   "name" : "이시현",
@@ -14,7 +15,7 @@ Content-Type: application/json
 
 ### 로그인
 
-POST http://localhost:8888/auth/login
+POST http://localhost:8888/api/auth/login
 Content-Type: application/json
 
 {
@@ -24,13 +25,13 @@ Content-Type: application/json
 
 ### 사용자 페이지
 
-GET http://localhost:8080/user
+GET http://localhost:8888/user
 
 
 ### 관리자 페이지
 
-GET http://localhost:8080/admin
+GET http://localhost:8888/admin
 
 ### 메인 페이지
 
-GET http://localhost:8080
+GET http://localhost:8888

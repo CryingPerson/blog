@@ -16,12 +16,10 @@ import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.crypto.SecretKey;
 import java.security.Key;
@@ -33,6 +31,7 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api")
 @Slf4j
 public class AuthController {
 
@@ -75,6 +74,14 @@ public class AuthController {
 //    public String login(){
 //        return "로그인 페이지";
 //    }
+
+
+    @RequestMapping("favicon.ico")
+    public void favicon() {
+        // 빈 응답으로 처리하거나 리소스를 반환하지 않음
+    }
+
+
     @PostMapping("/auth/signup")
     public void signup(@RequestBody Signup signup){
         authService.signup(signup);

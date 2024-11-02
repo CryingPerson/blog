@@ -30,6 +30,9 @@ public class Comment {
     private String content;
 
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private AppUser appUser;
+
     @ManyToOne
     @JoinColumn
     private Post post;
@@ -41,7 +44,9 @@ public class Comment {
         this.content = content;
 
     }
-
+    public void setUser(AppUser appUser) {
+        this.appUser = appUser;
+    }
     public void setPost(Post post) {
         this.post = post;
     }

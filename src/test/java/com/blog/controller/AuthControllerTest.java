@@ -54,7 +54,7 @@ class AuthControllerTest {
 
 
         Signup signup = Signup.builder()
-                .name("이시현")
+                .name("이시현1")
                 .password("1111")
                 .email("opnice12@naver.com")
                 .build();

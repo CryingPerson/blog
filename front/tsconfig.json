@@ -12,6 +12,7 @@
     // 다른 옵션들...
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
+    "noImplicitAny": false
     // 필요에 따라 추가적인 옵션들...
   }
 }

@@ -3,6 +3,7 @@ package com.blog.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -23,6 +24,9 @@ public class Post {
     @JoinColumn
     private AppUser user;
 
+    @Column(nullable = false)
+    private LocalDateTime regDate;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "post")
     private List<Comment> comments;
 
@@ -31,6 +35,7 @@ public class Post {
         this.title = title;
         this.content = content;
         this.user = user;
+        this.regDate = LocalDateTime.now();
     }
 
         // 서비스의 정책을 넣지마세요!! 절대!!

@@ -10,12 +10,15 @@ import com.blog.repository.UserRepository;
 import com.blog.request.post.PostCreate;
 import com.blog.request.post.PostEdit;
 import com.blog.request.post.PostSearch;
+import com.blog.response.PagingResponse;
 import com.blog.response.PostResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -50,21 +53,18 @@ public class PostService {
         Post post = postRepository.findById(id)
                 .orElseThrow(PostNotFound::new);
 
-        return PostResponse.builder()
-                .id(post.getId())
-                .title(post.getTitle())
-                .content(post.getContent())
-                .build();
+        return new PostResponse(post);
     }
 
     // 글이 너무 많은 경우 -> 비용이 너무 많이 든다.
     // 글이 -> 100,000,000 -> DB 글 모두 조회하는 경우 -> DB가 뻗을 수 있다.
     // DB -> 애플리케이션 서버로 전달하는 시간, 트래픽비용 등이 많이 발생할 수 있다.
-    public List<PostResponse> getList(PostSearch postSearch) {
+    public PagingResponse<PostResponse> getList(PostSearch postSearch) {
         // web -> page 1 -> 0
-        return postRepository.getList(postSearch).stream()
-                .map(PostResponse::new)
-                .collect(Collectors.toList());
+        Page<Post> postPage = postRepository.getList(postSearch);
+        PagingResponse<PostResponse> postList = new PagingResponse<>(postPage, PostResponse.class);
+
+        return postList;
     }
 
     @Transactional

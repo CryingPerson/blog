@@ -11,7 +11,7 @@
   "compilerOptions": {
     "composite": true,
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
-    "baseUrl": "../../../../Users/User/Downloads/inflearn-hodolog-main/inflearn-hodolog-main/front",
+    "baseUrl": ".",
     "paths": {
       "@/*": [
         "./src/*"

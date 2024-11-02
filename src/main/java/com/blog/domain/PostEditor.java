@@ -1,6 +1,5 @@
 package com.blog.domain;
 
-import lombok.Builder;
 import lombok.Generated;
 import lombok.Getter;
 
